@@ -16,7 +16,6 @@ router.post("/signup", async (req, res) => {
             password: z.string().min(3).max(50)
         });
 
-        console.log(req.body);
         const { success, data } = requiredBody.safeParse(req.body);
         if (!success) {
             res.status(StatusCodes.BAD_REQUEST).send({ message: "Invalid input." });
