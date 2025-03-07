@@ -16,6 +16,7 @@ router.post("/signup", async (req, res) => {
             password: z.string().min(3).max(50)
         });
 
+        console.log(req.body);
         const { success, data } = requiredBody.safeParse(req.body);
         if (!success) {
             res.status(StatusCodes.BAD_REQUEST).send({ message: "Invalid input." });
@@ -29,7 +30,7 @@ router.post("/signup", async (req, res) => {
             email: email
         });
 
-        if (user) {
+        if (user.length > 0) {
             res.status(StatusCodes.BAD_REQUEST).json({ message: "User already exists!" });
             return;
         }
@@ -62,7 +63,6 @@ router.post("/signin", async (req, res) => {
         });
 
         const { success, data } = requiredBody.safeParse(req.body);
-        console.log(success, data);
         if (!success) {
             res.status(StatusCodes.BAD_REQUEST).json({
                 message: "Invalid input."
@@ -74,6 +74,13 @@ router.post("/signin", async (req, res) => {
         const user = await User.findOne({
             email: email,
         });
+        
+        if(!user) {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                message: "User doesn't exist."
+            });
+            return;
+        }
         const passwordMatch = bcrypt.compare(password, user.password);
 
         if (user && passwordMatch) {

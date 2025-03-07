@@ -8,7 +8,8 @@ signUpForm.addEventListener("submit", async () => {
         document.getElementById("response-message").innerText = "Already signed up";
         return;
     }
-    const username = document.getElementById("signup-username").value;
+    const name = document.getElementById("signup-name").value;
+    const email = document.getElementById("signup-username").value;
     const password = document.getElementById("signup-password").value;
 
     try {
@@ -18,7 +19,8 @@ signUpForm.addEventListener("submit", async () => {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                username,
+                name,
+                email,
                 password
             })
         });
